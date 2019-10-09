@@ -14,13 +14,13 @@ npm install sanitize-filename
 ## Example
 
 ```js
-var sanitize = require("sanitize-filename");
+const sanitize = require("sanitize-filename");
 
 // Some string that may be unsafe or invalid as a filename
-var UNSAFE_USER_INPUT = "~/.\u0000ssh/authorized_keys";
+const UNSAFE_USER_INPUT = "~/.\u0000ssh/authorized_keys";
 
 // Sanitize the string to be safe for use as a filename.
-var filename = sanitize(UNSAFE_USER_INPUT);
+const filename = sanitize(UNSAFE_USER_INPUT);
 // -> "~.sshauthorized_keys"
 ```
 
@@ -53,7 +53,7 @@ filename.
 An empty string `""` can be returned. For example:
 
 ```js
-var sanitize = require("sanitize-filename");
+const sanitize = require("sanitize-filename");
 sanitize("..")
 // -> ""
 
@@ -64,7 +64,7 @@ sanitize("..")
 Two different inputs can return the same value. For example:
 
 ```js
-var sanitize = require("sanitize-filename");
+const sanitize = require("sanitize-filename");
 sanitize("file?")
 // -> "file"
 sanitize ("*file*")
@@ -101,3 +101,4 @@ Options:
  a function, the function will be called with the invalid characters and it's
  return value will be used as the replacement. See [`String.prototype.replace`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace)
  for more info.
+* `options.customIllegalChars`: *optional, array*. Replaces additional strings provided in an array (each of them will be replaced)

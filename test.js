@@ -116,6 +116,16 @@ test('255 characters max', function(t) {
   t.end();
 });
 
+test('custom illegal chars - comma', function(t) {
+  const options = {
+    customIllegalChars: [','],
+    replacement: '_'
+  };
+
+  t.equal(sanitize('hello,world.txt', options), 'hello_world.txt');
+  t.end();
+});
+
 // Test the handling of non-BMP chars in UTF-8
 //
 
