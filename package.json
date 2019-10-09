@@ -1,17 +1,10 @@
 {
   "name": "sanitize-filename",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "description": "Sanitize a string for use as a filename",
-  "keywords": [
-    "file",
-    "name",
-    "filename",
-    "sanitize",
-    "validate",
-    "escape"
-  ],
-  "license": "WTFPL OR ISC",
-  "author": "Parsha Pourkhomami",
+  "keywords": ["file", "name", "filename", "sanitize", "validate", "escape"],
+  "license": "WTFPL",
+  "author": "Manuel Reil",
   "main": "index.js",
   "types": "index.d.ts",
   "repository": {
@@ -20,17 +13,24 @@
   },
   "scripts": {
     "test": "tape test.js",
-    "test-browser": "airtap --local --open -- test.js",
-    "test-browser-sauce": "airtap -- test.js"
+    "lint": "eslint index.js"
   },
   "dependencies": {
     "truncate-utf8-bytes": "^1.0.0"
   },
   "devDependencies": {
-    "airtap": "^2.0.3",
     "browserify": "^14.0.0",
     "concat-stream": "^1.5.1",
     "mktemp": "^0.4.0",
-    "tape": "^4.2.2"
+    "tape": "^4.2.2",
+    "eslint": "^6.0.1",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-security": "^1.4.0",
+    "husky": "^3.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn lint"
+    }
   }
 }

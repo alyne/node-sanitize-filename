@@ -6,7 +6,7 @@
  * Unsafe characters are either removed or replaced by a substitute set
  * in the optional `options` object.
  *
- * Illegal Characters on Various Operating Systems
+ * Illegal Characters on vartious Operating Systems
  * / ? < > \ : * | "
  * https://kb.acronis.com/content/39790
  *
@@ -28,32 +28,42 @@
  * @return {String}         Sanitized filename
  */
 
-var truncate = require("truncate-utf8-bytes");
+const truncate = require('truncate-utf8-bytes');
 
-var illegalRe = /[\/\?<>\\:\*\|"]/g;
-var controlRe = /[\x00-\x1f\x80-\x9f]/g;
-var reservedRe = /^\.+$/;
-var windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
-var windowsTrailingRe = /[\. ]+$/;
+const illegalRe = /[/?<>\\:*|"]/g;
+const controlRe = /[\x00-\x1f\x80-\x9f]/g; //eslint-disable-line
+const reservedRe = /^\.+$/;
+const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i; //eslint-disable-line
+const windowsTrailingRe = /[. ]+$/;
 
-function sanitize(input, replacement) {
+function sanitize(input, { replacement, customIllegalChars }) {
   if (typeof input !== 'string') {
     throw new Error('Input must be string');
   }
-  var sanitized = input
+
+  let sanitized = input
     .replace(illegalRe, replacement)
     .replace(controlRe, replacement)
     .replace(reservedRe, replacement)
     .replace(windowsReservedRe, replacement)
     .replace(windowsTrailingRe, replacement);
+
+  if (customIllegalChars) {
+    sanitized = sanitized.replace(
+      new RegExp(customIllegalChars.join()), //eslint-disable-line
+      replacement
+    );
+  }
+
   return truncate(sanitized, 255);
 }
 
-module.exports = function (input, options) {
-  var replacement = (options && options.replacement) || '';
-  var output = sanitize(input, replacement);
-  if (replacement === '') {
+module.exports = function(input, options = {}) {
+  options.replacement = (options && options.replacement) || '';
+
+  const output = sanitize(input, options);
+  if (options.replacement === '') {
     return output;
   }
-  return sanitize(output, '');
+  return sanitize(output, { replacement: '' });
 };
