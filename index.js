@@ -36,7 +36,7 @@ const reservedRe = /^\.+$/;
 const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i; //eslint-disable-line
 const windowsTrailingRe = /[. ]+$/;
 
-function sanitize(input, { replacement, customIllegalChars }) {
+function sanitize(input, replacement, customIllegalChars) {
   if (typeof input !== 'string') {
     throw new Error('Input must be string');
   }
@@ -58,12 +58,12 @@ function sanitize(input, { replacement, customIllegalChars }) {
   return truncate(sanitized, 255);
 }
 
-module.exports = function(input, options = {}) {
-  options.replacement = (options && options.replacement) || '';
+module.exports = function(input, replacement, customIllegalChars) {
+  replacement = replacement || '';
 
-  const output = sanitize(input, options);
-  if (options.replacement === '') {
+  const output = sanitize(input, replacement, customIllegalChars);
+  if (replacement === '') {
     return output;
   }
-  return sanitize(output, { replacement: '' });
+  return sanitize(output, '');
 };
